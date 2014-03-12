@@ -30,7 +30,7 @@ describe Mock5::Api do
     it "can not be specified by anything else" do
       [false, :foo, 123].each do |invalid_endpoint|
         expect{ described_class.new(invalid_endpoint) }
-          .to raise_error(ArgumentError)
+          .to raise_error(ArgumentError, "Endpoint should be string or regexp")
       end
     end
   end

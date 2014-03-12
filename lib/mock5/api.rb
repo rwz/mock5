@@ -26,7 +26,7 @@ module Mock5
       when Regexp
         endpoint
       else
-        raise ArgumentError, "Endpoint should hbe string or regexp"
+        raise ArgumentError, "Endpoint should be string or regexp"
       end
     end
 
