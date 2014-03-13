@@ -14,14 +14,14 @@ module Mock5
   end
 
   def mount(*apis)
-    (apis.to_set - mounted_apis).each do |api|
+    apis.to_set.subtract(mounted_apis).each do |api|
       mounted_apis.add api
       registry.register_request_stub api.request_stub
     end
   end
 
   def unmount(*apis)
-    (mounted_apis & apis).each do |api|
+    mounted_apis.intersection(apis).each do |api|
       mounted_apis.delete api
       registry.remove_request_stub api.request_stub
     end
