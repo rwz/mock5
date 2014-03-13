@@ -14,18 +14,16 @@ module Mock5
   end
 
   def mount(*apis)
-    apis.each do |api|
-      if mounted_apis.add?(api)
-        registry.register_request_stub api.request_stub
-      end
+    (apis.to_set - mounted_apis).each do |api|
+      mounted_apis.add api
+      registry.register_request_stub api.request_stub
     end
   end
 
   def unmount(*apis)
-    apis.each do |api|
-      if mounted_apis.delete?(api)
-        registry.remove_request_stub api.request_stub
-      end
+    (mounted_apis & apis).each do |api|
+      mounted_apis.delete api
+      registry.remove_request_stub api.request_stub
     end
   end
 
@@ -34,10 +32,10 @@ module Mock5
   end
 
   def with_mounted(*apis)
-    mount *apis
+    mounted = mount(*apis)
     yield
   ensure
-    unmount *apis
+    unmount *mounted
   end
 
   def unmount_all!

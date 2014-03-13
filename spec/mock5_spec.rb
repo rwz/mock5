@@ -43,6 +43,11 @@ describe Mock5 do
         expect(mounted_apis).to include(api)
         expect(mounted_apis).to include(another_api)
       end
+
+      it "returns the list of mounted apis" do
+        expect(described_class.mount(api)).to eq([api].to_set)
+        expect(described_class.mount(api, another_api)).to eq([another_api].to_set)
+      end
     end
 
     describe ".unmount" do
@@ -69,6 +74,11 @@ describe Mock5 do
         described_class.mount another_api
         described_class.unmount api
         expect(mounted_apis).to include(another_api)
+      end
+
+      it "returns the list of unmounted apis" do
+        expect(described_class.unmount(another_api)).to be_empty
+        expect(described_class.unmount(api, another_api)).to eq([api].to_set)
       end
     end
 
@@ -118,6 +128,17 @@ describe Mock5 do
 
         expect(mounted_apis).to be_empty
         expect(&action).not_to change(mounted_apis, :empty?)
+      end
+
+      it "doesn't unmount api, that was mounted before" do
+        described_class.mount api
+
+        described_class.with_mounted api, another_api do
+          expect(mounted_apis).to include(another_api)
+        end
+
+        expect(mounted_apis).to include(api)
+        expect(mounted_apis).not_to include(another_api)
       end
     end
 
