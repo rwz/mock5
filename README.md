@@ -24,10 +24,17 @@ Or install it yourself as:
 
 ## Usage
 
+Say you're writing a nice wrapper around remote user management REST API.
+You want your library to handle any unexpected situation aproppriately and
+show a relevant error message, or schedule a retry some time later.
+
+Obviously, you can't rely on a production API to test all this codepaths. You
+probably want a way to emulate all this situations locally. Enter Mock5:
+
 ```ruby
+# user registers successfully
 SuccessfulRegistration = Mock5.mock("http://example.com") do
   post "/users" do
-    # emulate successful registration
     MultiJson.dump(
       first_name: "Zapp",
       last_name: "Brannigan",
@@ -36,6 +43,7 @@ SuccessfulRegistration = Mock5.mock("http://example.com") do
   end
 end
 
+# registration returns validation errors
 UnsuccessfulRegistration = Mock5.mock("http://example.com") do
   post "/users" do
     halt 406, MultiJson.dump(
@@ -45,28 +53,58 @@ UnsuccessfulRegistration = Mock5.mock("http://example.com") do
   end
 end
 
-describe MyApi do
+# remote api is down for some reason
+RegistrationUnavailable = Mock5.mock("http://example.com") do
+  post "/users" do
+    halt 503, "Service Unavailable"
+  end
+end
+
+# remote api times takes long time to respond
+RegistrationTimeout = Mock5.mock("http://example.com") do
+  post "/users" do
+    sleep 15
+  end
+end
+
+describe MyApiWrapper do
   describe "successfull" do
     around do |example|
-      Mock5.with_mounted SuccessfulRegistration do
-        example.call
-      end
+      Mock5.with_mounted(SuccessfulRegistration, &example)
     end
 
     it "allows user registration" do
-      expect{ MyApi.register_user }.not_to raise_error
+      expect{ MyApiWrapper.register_user }.not_to raise_error
     end
   end
 
   describe "validation errors" do
     around do |example|
-      Mock5.with_mounted UnsuccessfulRegistration do
-        example.call
-      end
+      Mock5.with_mounted(UnsuccessfulRegistration, &example)
     end
 
-    it "returns errors" do
-      expect{ MyApi.register_user }.to raise_error(MyApi::ValidationError)
+    it "raises a valiation errors" do
+      expect{ MyApiWrapper.register_user }.to raise_error(MyApiWrapper::ValidationError)
+    end
+  end
+
+  describe "service is unavailable" do
+    around do |example|
+      Mock5.with_mounted(RegistrationUnavailable, &example)
+    end
+
+    it "raises a ServiceUnavailable error" do
+      expect{ MyApiWrapper.register_user }.to raise_error(MyApiWrapper::ServiceUnavailable)
+    end
+  end
+
+  describe "timeout" do
+    around do |example|
+      Mock5.with_mounted(RegistrationTimeout, &example)
+    end
+
+    it "raises timeout error" do
+      expect{ MyApiWrapper.register_user }.to raise_error(Timeout::Error)
     end
   end
 end
