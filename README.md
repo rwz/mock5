@@ -6,7 +6,7 @@
 [travis]: http://travis-ci.org/rwz/mock5
 [codeclimate]: https://codeclimate.com/github/rwz/mock5
 
-Mock5 allows to mock external APIs with simple Sinatra Rake apps.
+Mock5 allows to mock external APIs with simple Sinatra Rack apps.
 
 ## Installation
 
