@@ -43,7 +43,7 @@ SuccessfulRegistration = Mock5.mock("http://example.com") do
   end
 end
 
-# registration returns validation errors
+# registration returns validation error
 UnsuccessfulRegistration = Mock5.mock("http://example.com") do
   post "/users" do
     halt 406, MultiJson.dump(
@@ -83,7 +83,7 @@ describe MyApiWrapper do
       Mock5.with_mounted(UnsuccessfulRegistration, &example)
     end
 
-    it "raises a valiation errors" do
+    it "raises a valiation error" do
       expect{ MyApiWrapper.register_user }.to raise_error(MyApiWrapper::ValidationError)
     end
   end
