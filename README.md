@@ -28,8 +28,8 @@ Say you're writing a nice wrapper around remote user management REST API.
 You want your library to handle any unexpected situation aproppriately and
 show a relevant error message, or schedule a retry some time later.
 
-Obviously, you can't rely on a production API to test all this codepaths. You
-probably want a way to emulate all this situations locally. Enter Mock5:
+Obviously, you can't rely on a production API to test all these codepaths. You
+probably want a way to emulate all these situations locally. Enter Mock5:
 
 ```ruby
 # user registers successfully
