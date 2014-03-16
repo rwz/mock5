@@ -7,19 +7,69 @@ Mock5 allows to mock external APIs with simple Sinatra Rack apps.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+This gem could be useful for testing, and maybe development purposes.
+Add it to the relevant groups in your Gemfile.
 
-    gem "mock5"
+```ruby
+gem "mock5", groups: [:test, :development]
+```
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install mock5
+and run `bundle`.
 
 ## Usage
+
+### mock
+Use this method to describe API you're trying to mock.
+
+```ruby
+weather_api = Mock5.mock("http://weather-api.com") do
+  get "/weather.json" do
+    MultiJson.dump(
+      location: "Philadelphia, PA",
+      temperature: "60F",
+      description: "Sunny"
+    )
+  end
+end
+```
+
+### mount
+Use this method to enable API mocks you've defined previously.
+
+```ruby
+Mock5.mount weather_api, some_other_api
+Net::HTTP.get("weather-api.com", "/weather.json") # => "{\"location\":...
+```
+
+### unmount
+Unmounts one of the already mounted APIs
+
+```ruby
+Mock5.unmount some_other_api # [, and_another_api... ]
+```
+
+### mounted_apis
+This method returns a Set of all currently mounted APIs
+
+```ruby
+Mock5.mounted_apis # => { weather_api }
+Mock5.mount another_api
+Mock5.mounted_apis # => { weather_api, another_api }
+```
+
+### with_mounted
+Executes the block with all given APIs mounted, and then unmounts them.
+
+```ruby
+Mock5.mounted_apis # => { other_api }
+Mock5.with_mounted weather_api, other_api do
+  Mock5.mounted_apis # => { other_api, weather_api }
+  run_weather_api_test_suite!
+end
+Mock5.mounted_apis # => { other_api }
+```
+
+## Example
 
 Say you're writing a nice wrapper around remote user management REST API.
 You want your library to handle any unexpected situation aproppriately and
