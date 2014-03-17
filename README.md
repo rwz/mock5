@@ -42,7 +42,7 @@ Net::HTTP.get("weather-api.com", "/weather.json") # => "{\"location\":...
 ```
 
 ### unmount
-Unmounts one of the already mounted APIs
+Unmounts passed APIs if thery were previously mounted
 
 ```ruby
 Mock5.unmount some_other_api # [, and_another_api... ]
