@@ -2,6 +2,7 @@
 [![Gem Version](https://img.shields.io/gem/v/mock5.svg)](https://rubygems.org/gems/mock5)
 [![Build Status](https://img.shields.io/travis/rwz/mock5.svg)](http://travis-ci.org/rwz/mock5)
 [![Code Climate](https://img.shields.io/codeclimate/github/rwz/mock5.svg)](https://codeclimate.com/github/rwz/mock5)
+[![Inline docs](http://inch-pages.github.io/github/rwz/mock5.svg)](http://inch-pages.github.io/github/rwz/mock5)
 
 Mock5 allows to mock external APIs with simple Sinatra Rack apps.
 
