@@ -28,8 +28,9 @@ module Mock5
     #     end
     #   end
     #
-    # @param endpoint [String, Regexp] a url of the service API's supposed to
-    #   mock. Can only contain schema and hostname, path should be empty.
+    # @param endpoint [String, Regexp] a url of the API service to
+    # endpoint to mock. Can only contain schema and hostname, path
+    # should be empty.
     #
     # @yield a block passed to Sinatra to initialize an app
     #
@@ -39,7 +40,7 @@ module Mock5
       @endpoint = normalize_endpoint(endpoint)
     end
 
-    # Returns webmock request stub build with Sinatra app and enpoint url
+    # Returns webmock request stub built with Sinatra app and enpoint url
     #
     # @return [WebMock::RequestStub]
     def request_stub
