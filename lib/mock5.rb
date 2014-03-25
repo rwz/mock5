@@ -30,8 +30,8 @@ module Mock5
   #     end
   #   end
   #
-  # @param endpoint [String] a url of the API to mock. Should only include
-  #   hostname and schema.
+  # @param endpoint [String] a url of the API service endpoint to mock.
+  # Should only include hostname and schema.
   #
   # @yield a block to define behavior using Sinatra API
   #
@@ -40,9 +40,9 @@ module Mock5
     Api.new(endpoint, &block)
   end
 
-  # Mounts given list of APIs. This method returns a list of APIs that were
-  # actually mounted. The APIs that were already mounted when the method is
-  # called are not included in the return value.
+  # Mounts given list of APIs. Returns a list of APIs that were actually
+  # mounted. The APIs that were already mounted when the method is called
+  # are not included in the return value.
   #
   # @param apis [Enum #to_set] a list of APIs to mount
   #
@@ -54,7 +54,7 @@ module Mock5
     end
   end
 
-  # Unmount given APIs. Only returns the list of APIs that were actually
+  # Unmount given APIs. Returns only the list of APIs that were actually
   # unmounted. If the API wasn't mounted when the method is called, it won't be
   # included in the return value.
   #
@@ -78,9 +78,9 @@ module Mock5
   end
 
   # Mounts a list of given APIs, executes block and then unmounts them back.
-  # Could be useful for wrapping around RSpec tests.
-  # It only unmounts APIs that were not mounted before. Any API that was
-  # mounted before the method was called stays mounted.
+  # Useful for wrapping around RSpec tests. It only unmounts APIs that were
+  # not mounted before. Any API that was mounted before the method was
+  # called remains mounted.
   #
   # @example
   #   my_api = Mock5.mock("http://example.com") do
