@@ -31,7 +31,7 @@ module Mock5
   #   end
   #
   # @param endpoint [String] a url of the API service endpoint to mock.
-  # Should only include hostname and schema.
+  #   Should only include hostname and schema.
   #
   # @yield a block to define behavior using Sinatra API
   #

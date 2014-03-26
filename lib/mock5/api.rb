@@ -29,8 +29,8 @@ module Mock5
     #   end
     #
     # @param endpoint [String, Regexp] a url of the API service to
-    # endpoint to mock. Can only contain schema and hostname, path
-    # should be empty.
+    #   endpoint to mock. Can only contain schema and hostname, path
+    #   should be empty.
     #
     # @yield a block passed to Sinatra to initialize an app
     #
