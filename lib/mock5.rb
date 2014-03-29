@@ -9,7 +9,7 @@ module Mock5
 
   # Returns a set of currently mounted APIs
   #
-  # @return [Set] a list of currently mounted apis
+  # @return [Set] a list of currently mounted APIs
   def mounted_apis
     @_mounted_apis ||= Set.new
   end
