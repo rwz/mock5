@@ -22,7 +22,7 @@ describe Mock5::Api do
         .to raise_error(ArgumentError, "Endpoint URL should not include path")
     end
 
-    it "can not be specified as a invalid url string" do
+    it "can not be specified as an invalid url string" do
       expect{ described_class.new("foo") }
         .to raise_error(ArgumentError, "Endpoint should be a valid URL")
     end

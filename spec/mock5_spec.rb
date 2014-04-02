@@ -18,7 +18,7 @@ describe Mock5 do
       WebMock::StubRegistry.instance.reset!
       described_class.instance_exec do
         if instance_variable_defined?(:@_mounted_apis)
-          remove_instance_variable(:@_mounted_apis)
+          remove_instance_variable :@_mounted_apis
         end
       end
     end
@@ -35,7 +35,7 @@ describe Mock5 do
 
       it "mounts an api only once" do
         10.times{ described_class.mount api }
-        expect(mounted_apis).to have(1).item
+        expect(mounted_apis).to have(1).api
       end
 
       it "mounts several APIs at once" do
