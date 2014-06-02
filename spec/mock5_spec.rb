@@ -3,9 +3,10 @@ require "mock5"
 describe Mock5 do
   describe ".mock" do
     it "creates an Api" do
-      block = ->{}
-      expect(described_class::Api).to receive(:new).with(/foo/, &block)
-      described_class.mock /foo/, &block
+      expect(described_class::Api).to receive(:new).with(/foo/).and_yield
+      described_class.mock /foo/ do
+        # mock definition goes here
+      end
     end
 
     it "returns an Api" do
@@ -24,6 +25,7 @@ describe Mock5 do
     end
 
     let(:mounted_apis){ described_class.mounted_apis }
+    let(:mounted_apis_qty){ mounted_apis.size }
     let(:api){ described_class.mock }
     let(:another_api){ described_class.mock }
 
@@ -35,7 +37,7 @@ describe Mock5 do
 
       it "mounts an api only once" do
         10.times{ described_class.mount api }
-        expect(mounted_apis).to have(1).api
+        expect(mounted_apis_qty).to eq(1)
       end
 
       it "mounts several APIs at once" do
@@ -65,7 +67,7 @@ describe Mock5 do
 
       it "unmounts several APIs at once" do
         described_class.mount another_api
-        expect(mounted_apis).to have(2).apis
+        expect(mounted_apis_qty).to eq(2)
         described_class.unmount api, another_api
         expect(mounted_apis).to be_empty
       end
@@ -88,13 +90,13 @@ describe Mock5 do
       end
 
       it "unmounts all currently mounted apis" do
-        expect(mounted_apis).to have(3).apis
+        expect(mounted_apis_qty).to eq(3)
         described_class.unmount_all!
         expect(mounted_apis).to be_empty
       end
 
       it "has .reset! alias" do
-        expect(mounted_apis).to have(3).apis
+        expect(mounted_apis_qty).to eq(3)
         described_class.reset!
         expect(mounted_apis).to be_empty
       end
@@ -104,11 +106,11 @@ describe Mock5 do
       before{ described_class.mount api }
 
       it "returns true if api is currently mounted" do
-        expect(described_class.mounted?(api)).to be_true
+        expect(described_class.mounted?(api)).to be_truthy
       end
 
       it "returns false if api is currently not mounted" do
-        expect(described_class.mounted?(another_api)).to be_false
+        expect(described_class.mounted?(another_api)).to be_falsy
       end
 
       it "returns true only when ALL api are mounted" do
