@@ -1,11 +1,12 @@
-require "mock5/version"
-require "mock5/api"
 require "set"
 
 # The main module of the gem, exposing all API management methods.
 # Can be included into class.
 module Mock5
   extend self
+
+  autoload :VERSION, "mock5/version"
+  autoload :Api, "mock5/api"
 
   # Returns a set of currently mounted APIs
   #
