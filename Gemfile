@@ -4,6 +4,6 @@ source "https://rubygems.org"
 gemspec
 
 gem "bundler", "~> 1.6"
-gem "rspec",   "~> 3.0"
+gem "rspec",   "~> 3.1"
 gem "rake",    "~> 10.3"
 gem "pry"
