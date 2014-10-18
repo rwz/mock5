@@ -30,6 +30,11 @@ describe Mock5 do
     let(:another_api){ described_class.mock }
 
     describe ".mount" do
+      it "raises ArgumentError when passed an invalid argument" do
+        action = ->{ described_class.mount nil }
+        message = "expected an instance of Mock5::Api"
+        expect(&action).to raise_error(ArgumentError, message)
+      end
       it "mounts an api" do
         described_class.mount api
         expect(mounted_apis).to include(api)

@@ -49,6 +49,7 @@ module Mock5
   # @return [Set] a list of APIs actually mounted
   def mount(*apis)
     apis.to_set.subtract(mounted_apis).each do |api|
+      check_api api
       mounted_apis.add api
       registry.register_request_stub api.request_stub
     end
@@ -124,5 +125,9 @@ module Mock5
 
   def registry
     WebMock::StubRegistry.instance
+  end
+
+  def check_api(api)
+    fail ArgumentError, "expected an instance of Mock5::Api" unless Api === api
   end
 end
