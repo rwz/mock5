@@ -21,7 +21,7 @@ module Mock5
   #   my_mock_api = Mock5.mock("http://example.com") do
   #     get "posts" do
   #       [
-  #         {id: 1, body: "a posy body"},
+  #         {id: 1, body: "a post body"},
   #         {id: 2, body: "another post body"}
   #       ].to_json
   #     end
