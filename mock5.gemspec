@@ -1,7 +1,5 @@
 # coding: utf-8
-lib = File.expand_path("../lib", __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "mock5/version"
+require_relative "lib/mock5/version"
 
 Gem::Specification.new do |spec|
   spec.name                  = "mock5"
