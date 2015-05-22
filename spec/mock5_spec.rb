@@ -16,7 +16,6 @@ describe Mock5 do
 
   describe "API mgmt" do
     before do
-      WebMock::StubRegistry.instance.reset!
       described_class.instance_exec do
         if instance_variable_defined?(:@_mounted_apis)
           remove_instance_variable :@_mounted_apis
@@ -182,13 +181,28 @@ describe Mock5 do
         end
       end
 
-      before{ described_class.mount api, another_api }
+      context "#mount" do
+        before{ described_class.mount api, another_api }
 
-      it "stubs remote apis" do
-        expect(get("http://example.com/index.html?foo=bar")).to eq("index.html")
-        expect(post("http://example.com/submit/here?foo=bar")).to eq("submit")
-        expect(post("http://example.com/foo/bar?fizz=buzz")).to eq("bar")
-        expect(get("http://example.com/bar/foo")).to eq("foo")
+        it "stubs remote apis" do
+          expect(get("http://example.com/index.html?foo=bar")).to eq("index.html")
+          expect(post("http://example.com/submit/here?foo=bar")).to eq("submit")
+          expect(post("http://example.com/foo/bar?fizz=buzz")).to eq("bar")
+          expect(get("http://example.com/bar/foo")).to eq("foo")
+        end
+      end
+
+      context "#with_mounted" do
+        around do |example|
+          described_class.with_mounted api, another_api, &example
+        end
+
+        it "stubs remote apis" do
+          expect(get("http://example.com/index.html?foo=bar")).to eq("index.html")
+          expect(post("http://example.com/submit/here?foo=bar")).to eq("submit")
+          expect(post("http://example.com/foo/bar?fizz=buzz")).to eq("bar")
+          expect(get("http://example.com/bar/foo")).to eq("foo")
+        end
       end
     end
   end

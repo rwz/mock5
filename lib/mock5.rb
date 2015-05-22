@@ -66,7 +66,9 @@ module Mock5
   def unmount(*apis)
     mounted_apis.intersection(apis).each do |api|
       mounted_apis.delete api
-      registry.remove_request_stub api.request_stub
+      if registry.request_stubs.include?(api.request_stub)
+        registry.remove_request_stub api.request_stub
+      end
     end
   end
 
