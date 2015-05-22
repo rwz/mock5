@@ -1,5 +1,5 @@
 # coding: utf-8
-require_relative "lib/mock5/version"
+require File.expand_path("../lib/mock5/version", __FILE__)
 
 Gem::Specification.new do |spec|
   spec.name                  = "mock5"
@@ -10,8 +10,7 @@ Gem::Specification.new do |spec|
   spec.description           = "Create and manage API mocks with Sinatra"
   spec.homepage              = "https://github.com/rwz/mock5"
   spec.license               = "MIT"
-  spec.files                 = `git ls-files -z`.split("\x0")
-  spec.test_files            = spec.files.grep(/^spec/)
+  spec.files                 = Dir["LICENSE.text", "README.md", "lib/**/**"]
   spec.require_path          = "lib"
   spec.required_ruby_version = ">= 1.9.3"
 
